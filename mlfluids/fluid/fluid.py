@@ -148,6 +148,7 @@ class Fluid:
         prop_str_1: str,
         prop_str_2: str,
         prop_values: list[float],
+        use_guesses: bool = False,
     ) -> None:
         """
         Atualiza: EOS a partir dos valores dos parâmetros.
@@ -167,15 +168,20 @@ class Fluid:
                 value_2 *= norm_fluid._state.keyed_output(prop_2.cp_index)
 
         # Atualiza o estado das fases
-        update_args = cp.generate_update_pair(
-            prop_1.cp_index, value_1, prop_2.cp_index, value_2
-        )
         try:
             update_args = cp.generate_update_pair(
                 prop_1.cp_index, value_1, prop_2.cp_index, value_2
             )
             # Flash para determinação da fase.
-            self._state.update(*update_args)
+            if use_guesses and self._D is not None:
+                guesses = cp.PyGuessesStructure()
+                guesses.T = self._T
+                guesses.p = self._P
+                guesses.rhomolar = self._D
+
+                self._state.update_with_guesses(*update_args, guesses)
+            else:
+                self._state.update(*update_args)
             self._calc_phase()
 
         except ValueError as e:
@@ -335,7 +341,7 @@ class Fluid:
         results = np.empty((len(prop_values), len(target_props)), dtype=object)
 
         for i, values in enumerate(prop_values):
-            self.set_state(prop_str_1, prop_str_2, values)
+            self.set_state(prop_str_1, prop_str_2, values, use_guesses=True)
             results[i] = self.calc_props(target_props)
 
         return results

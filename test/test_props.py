@@ -1,6 +1,6 @@
 import numpy as np
 
-from bfluids import Fluid, set_refprop_path
+from mlfluids import Fluid, set_refprop_path
 
 set_refprop_path("/home/braun/Documents/Developer/REFPROP10")
 
@@ -25,8 +25,8 @@ fluid.set_mole_fractions([X, 1 - X])
 fluid.set_state("T*", "P*", [2.0, 2.0])
 
 # CÁLCULO DE PARÂMETROS
-P_vals = np.geomspace(1.01, 2, 20)
-T_vals = np.geomspace(1.01, 2, 30)
+P_vals = np.geomspace(1.1, 2.0, 100)
+T_vals = np.geomspace(0.3, 0.9, 100)
 
 Pv, Tv = np.meshgrid(P_vals, T_vals, indexing="ij")
 
