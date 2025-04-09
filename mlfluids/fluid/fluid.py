@@ -175,9 +175,11 @@ class Fluid:
             # Flash para determinação da fase.
             if use_guesses and self._D is not None:
                 guesses = cp.PyGuessesStructure()
-                guesses.T = self._T
-                guesses.p = self._P
                 guesses.rhomolar = self._D
+                if self._T:
+                    guesses.T = self._T
+                if self._P:
+                    guesses.p = self._P
 
                 self._state.update_with_guesses(*update_args, guesses)
             else:
@@ -208,6 +210,13 @@ class Fluid:
         self._T = self.T()
         self._P = self.p()
         self._D = self.rhomolar()
+
+    def set_state_critical(self) -> None:
+        """
+        Atualiza: EOS para o ponto critico.
+        """
+        self.specify_phase("critical_point")
+        self.set_state("T", "D", [self.T_critical(), self.rhomolar_critical()])
 
     @classmethod
     def register_prop(cls, key: str, *args, **kwargs):
@@ -324,27 +333,33 @@ class Fluid:
         """
         Retorna: (np.ndarray) propriedades calculadas.
         """
-        return np.array(
-            [self._calc_prop(prop_str) for prop_str in prop_strs], dtype=object
-        )
+        results = [self._calc_prop(prop_str) for prop_str in prop_strs]
 
-    def set_states_calc_props(
+        return np.array(results, dtype=object)
+
+    def calc_states_props(
         self,
         prop_str_1: str,
         prop_str_2: str,
         prop_values: np.ndarray,
         target_props: list[str],
+        log_errors: bool = True,
     ) -> np.ndarray:
         """
         Retorna: (np.ndarray) propriedades calculadas nos diferentes estados.
         """
-        results = np.empty((len(prop_values), len(target_props)), dtype=object)
+        results = []
 
-        for i, values in enumerate(prop_values):
-            self.set_state(prop_str_1, prop_str_2, values, use_guesses=True)
-            results[i] = self.calc_props(target_props)
+        for values in prop_values:
+            try:
+                self.set_state(prop_str_1, prop_str_2, values, use_guesses=True)
+                results.append(self.calc_props(target_props))
+            except Exception as e:
+                if log_errors:
+                    print(e)
+                continue
 
-        return results
+        return np.array(results, dtype=object)
 
 
 @Fluid.register_prop("PHASE")

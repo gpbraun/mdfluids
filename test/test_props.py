@@ -6,9 +6,9 @@ set_refprop_path("/home/braun/Documents/Developer/REFPROP10")
 
 
 # mixture = "Air"
-mixture = "Nitrogen&Oxygen"
+mixture = "CO2&H2S"
 
-X = 0.79
+X = 0.5
 
 # FLUIDO DE NORMALIZAÇÃO
 norm_fluid = Fluid(mixture)
@@ -25,8 +25,8 @@ fluid.set_mole_fractions([X, 1 - X])
 fluid.set_state("T*", "P*", [2.0, 2.0])
 
 # CÁLCULO DE PARÂMETROS
-P_vals = np.geomspace(1.1, 2.0, 100)
-T_vals = np.geomspace(0.3, 0.9, 100)
+P_vals = np.geomspace(1.05, 20, 100)
+T_vals = np.geomspace(0.3, 0.95, 100)
 
 Pv, Tv = np.meshgrid(P_vals, T_vals, indexing="ij")
 
@@ -38,3 +38,4 @@ results = fluid.set_states_calc_props(
 )
 
 print(results)
+print(len(results))
