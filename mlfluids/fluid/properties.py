@@ -56,7 +56,7 @@ def parse_property_string(prop_str: str) -> tuple[Property, int | None, bool]:
     try:
         prop = PropertyRegistry.get(prop_key)
     except KeyError:
-        raise ValueError(f"Propriedade não encontrada: {prop_str}")
+        raise ValueError(f"Invalid property: {prop_str}")
 
     index = int(groupdict["index"]) if groupdict["index"] else None
     normalized = True if groupdict["normalized"] else False

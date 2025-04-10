@@ -1,6 +1,6 @@
 {
   "editor.formatOnSave": true,
-  "notebook.formatOnSave.enabled": false,
+  "notebook.formatOnSave.enabled": true,
   "code-runner.runInTerminal": true,
   "code-runner.ignoreSelection": true,
   "python.analysis.typeCheckingMode": "basic",
