@@ -1,10 +1,10 @@
-# MLPROP
+# MLFLUIDS
 
-`MLPROP` provides an interface to **CoolProp** and **REFPROPdll**, allowing the user to produce large, thermodynamically self‑consistent data sets for machine‑learning applications and process analysis.
+`MLFLUIDS` provides an interface to **CoolProp** and **REFPROPdll**, allowing the user to produce large, thermodynamically self‑consistent data sets for machine‑learning applications and process analysis.
 
 ## REFPROP requirement
 
-`MLPROP` presumes that the National Institute of Standards and Technology (NIST) **REFPROP** package is installed on the host system. The user must explicitly declare its location **before** instantiating any `Fluid` objects:
+`MLFLUIDS` presumes that the National Institute of Standards and Technology (NIST) **REFPROP** package is installed on the host system. The user must explicitly declare its location **before** instantiating any `Fluid` objects:
 
 ```python
 from mlfluids import set_refprop_path
