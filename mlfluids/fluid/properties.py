@@ -6,6 +6,12 @@ Esse módulo implementa definições de propriedades termodinâmicas.
 Gabriel Braun, 2025
 """
 
+__all__ = [
+    "PropertyRegistry",
+    "parse_property_string",
+]
+
+
 import re
 from dataclasses import dataclass
 
@@ -91,6 +97,41 @@ def _register_default_properties():
                 symbol="\\rho",
                 cp_index=cp.iDmolar,
                 rp_label="D",
+            ),
+            Property(
+                key="E",
+                name="internal energy",
+                symbol="U",
+                cp_index=cp.iUmolar,
+                rp_label="E",
+            ),
+            Property(
+                key="H",
+                name="enthalpy",
+                symbol="H",
+                cp_index=cp.iHmolar,
+                rp_label="H",
+            ),
+            Property(
+                key="S",
+                name="entropy",
+                symbol="S",
+                cp_index=cp.iSmolar,
+                rp_label="S",
+            ),
+            Property(
+                key="CV",
+                name="isochoric heat capacity",
+                symbol="C_V",
+                cp_index=cp.iCvmolar,
+                rp_label="CV",
+            ),
+            Property(
+                key="CP",
+                name="isobaric heat capacity",
+                symbol="C_P",
+                cp_index=cp.iCpmolar,
+                rp_label="CP",
             ),
             # PROPRIEDADES PARA TESTE DA EOS
             Property(

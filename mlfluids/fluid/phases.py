@@ -6,6 +6,11 @@ Esse módulo implementa definições de fases para cálculo de propriedades term
 Gabriel Braun, 2025
 """
 
+__all__ = [
+    "PhaseRegistry",
+]
+
+
 from dataclasses import dataclass
 
 import CoolProp.CoolProp as cp

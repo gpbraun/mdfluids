@@ -12,7 +12,6 @@ __all__ = [
 
 
 import re
-from itertools import product
 from typing import Any, Callable, ClassVar, Optional
 
 import CoolProp.CoolProp as cp
@@ -221,7 +220,7 @@ class Fluid:
     @classmethod
     def register_prop(cls, key: str, *args, **kwargs):
         """
-        Registra: propriedade atravéz de um Handler customizado.
+        Registra: propriedade através de um handler customizado.
         """
         prop = Property(key=key.upper(), *args, **kwargs)
         PropertyRegistry.register(prop)
@@ -335,7 +334,7 @@ class Fluid:
         """
         results = [self._calc_prop(prop_str) for prop_str in prop_strs]
 
-        return np.array(results, dtype=object)
+        return np.array(results)
 
     def calc_states_props(
         self,
@@ -359,9 +358,9 @@ class Fluid:
                     print(e)
                 continue
 
-        return np.array(results, dtype=object)
+        return np.array(results)
 
 
 @Fluid.register_prop("PHASE")
-def _calc_phase(self):
+def _get_phase(self):
     return self.phase.name
